@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout::head"></head>
+<body>
+
+<h3 th:text="${blog.name}" ></h3><br/>
+<p th:text="${blog.content}"></p>
+
+<p>
+    <a th:href="@{/}">
+        Back to blog list
+    </a>
+</p>
+
+<footer th:replace="layout::footer" ></footer>
+</body>
+</html>
