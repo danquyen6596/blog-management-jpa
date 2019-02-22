@@ -63,15 +63,32 @@ public class BlogController {
         return md;
     }
 
-//    @RequestMapping(value = "/blog/edit/{id}", method = RequestMethod.POST)
-//    private ModelAndView getEditBlog(@PathVariable Long id){
-//        Blog blog = blogService.findById(id);
-//
-//        ModelAndView md = new ModelAndView("view");
-//        md.addObject("blog", blog);
-//
-//        return md;
-//    }
+    @RequestMapping(value = "/blog/edit/{id}", method = RequestMethod.POST)
+    private ModelAndView setEditBlog(@PathVariable Long id){
+        Blog blog = blogService.findById(id);
+
+        ModelAndView md = new ModelAndView("view");
+        md.addObject("blog", blog);
+
+        return md;
+    }
+
+    @RequestMapping(value = "/blog/delete/{id}", method = RequestMethod.GET)
+    private ModelAndView getDeleteBlog(@PathVariable Long id){
+        Blog blog = blogService.findById(id);
+
+        ModelAndView md = new ModelAndView("delete");
+        md.addObject("blog", blog);
+
+        return md;
+    }
+
+    @RequestMapping(value = "/blog/delete", method = RequestMethod.POST)
+    private String setDeleteBlog(@RequestParam("id") Long id){
+        blogService.remove(id);
+
+        return "redirect:/";
+    }
 
 
 }

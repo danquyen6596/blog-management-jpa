@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head  th:replace=" layout::head"></head>
+<head th:replace=" layout::head"></head>
 <body>
 <h3>Edit blog</h3>
 
@@ -11,29 +11,22 @@
 </p>
 
 <div id="form">
-<form th:action="@{/blog/view)" th:object="${blog}" method="post">
-    <!--<input type="hidden" name="id" th:field="*{id}"/>-->
-    <table>
-        <tr>
-            <td>Name:</td>
-        </tr>
-        <tr>
-            <td><input type="text" th:field="*{name}"/></td>
-        </tr>
-        <tr>
-            <td>Content:</td>
-        </tr>
-        <tr>
-            <td><textarea cols="60" rows="10" th:field="*{content}"></textarea></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td><input type="submit" value="Update Blog"/></td>
-        </tr>
-    </table>
-</form>
+    <form action="#" th:action="@{/blog/save}" th:object="${blog}"
+          method="POST" novalidate="novalidate">
+        <!--<input type="hidden" name="id" th:field="*{id}"/>-->
+        <input type="hidden" th:field="*{id}"/>
+        <div>
+            <label>Name</label>
+            <input type="text" th:field="*{name}"/>
+        </div>
+        <div>
+            <label>Content</label><br/>
+            <textarea cols="60" rows="10" th:field="*{content}"></textarea>
+        </div>
+        <input type="submit" value="Update Blog"/>
+    </form>
 </div>
 
-<footer th:replace="layout::footer" ></footer>
+<footer th:replace="layout::footer"></footer>
 </body>
 </html>
