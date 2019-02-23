@@ -10,6 +10,7 @@ public class Blog {
     private Long id;
     private String name;
     private String content;
+    private String imagePath;
 
     public Blog() {
     }
@@ -46,5 +47,13 @@ public class Blog {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 }

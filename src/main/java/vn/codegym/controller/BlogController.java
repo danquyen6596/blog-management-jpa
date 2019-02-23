@@ -3,15 +3,24 @@ package vn.codegym.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import vn.codegym.model.Blog;
+import vn.codegym.model.BlogForm;
 import vn.codegym.service.BlogService;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 @Controller
 public class BlogController {
+
+    private static String UPLOAD_LOCATION="E:/CodeGym Viet Nam/Spring MVC Project/blog-management-jpa/src/main/webapp/static/image/";
 
     @Autowired
     private BlogService blogService;
@@ -29,14 +38,26 @@ public class BlogController {
             produces = "application/x-www-from-urlencoded;charset=UTF-8")
     private ModelAndView getCreateBlog(){
         ModelAndView md = new ModelAndView("create");
-        md.addObject("blog", new Blog());
+        md.addObject("blogForm", new BlogForm());
 
         return md;
     }
 
     @RequestMapping(value = "/blog/save", method = RequestMethod.POST,
             produces = "application/x-www-from-urlencoded;charset=UTF-8")
-    private String saveBlog(@ModelAttribute("blog") Blog blog){
+    private String saveBlog(@ModelAttribute BlogForm blogForm) throws IOException {
+        Blog blog = new Blog();
+        MultipartFile multipartFile = blogForm.getFile();
+        FileCopyUtils.copy(blogForm.getFile().getBytes(),
+                new File(UPLOAD_LOCATION + blogForm.getFile().getOriginalFilename()));
+
+        String imagePath = "/static/image/" + blogForm.getFile().getOriginalFilename();
+        //blogService.save(blogForm);
+
+        blog.setName(blogForm.getName());
+        blog.setContent(blogForm.getContent());
+        blog.setImagePath(imagePath);
+
         blogService.save(blog);
 
         return "redirect:/";
@@ -63,7 +84,8 @@ public class BlogController {
         return md;
     }
 
-    @RequestMapping(value = "/blog/edit/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/blog/edit/{id}", method = RequestMethod.POST,
+            produces = "application/x-www-from-urlencoded;charset=UTF-8")
     private ModelAndView setEditBlog(@PathVariable Long id){
         Blog blog = blogService.findById(id);
 
